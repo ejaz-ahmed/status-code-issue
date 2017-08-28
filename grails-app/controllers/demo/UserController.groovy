@@ -4,12 +4,11 @@ package demo
 import org.springframework.http.HttpStatus
 
 class UserController {
+    UserService userService
 	static responseFormats = ['json', 'xml']
 	
     def save() {
-        User user = new User()
-        user.username = request.JSON.username
-        user.save()
+        User user = userService.create(request.JSON.username)
         if(user.hasErrors()) {
             respond user.errors , [status: HttpStatus.BAD_REQUEST]
         } else {
