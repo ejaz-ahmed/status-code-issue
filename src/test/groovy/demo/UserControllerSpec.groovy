@@ -8,11 +8,11 @@ import spock.lang.Specification
 
 class UserControllerSpec extends Specification implements ControllerUnitTest<UserController>, DomainUnitTest <User> {
 
-    def setup() {
-    }
+    Closure doWithSpring() {{ ->
+        jsonSmartViewResolver(grails.plugin.json.view.mvc.JsonViewResolver)
+    }}
 
-    def cleanup() {
-    }
+    grails.plugin.json.view.mvc.JsonViewResolver jsonViewResolver
 
     void "test something"() {
         given:
@@ -32,10 +32,10 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         when:
         request.setJson(json)
         request.method = 'POST'
+        webRequest.actionName = 'save'
         controller.save()
 
         then:
         response.status == 400
-
     }
 }
